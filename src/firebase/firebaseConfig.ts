@@ -26,11 +26,5 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const realtimeDb = getDatabase(app);
 
-// Ensure RecaptchaVerifier is initialized only on the client side
-if (typeof window !== 'undefined') {
-    window.recaptchaVerifier = new RecaptchaVerifier(auth,'send-code-button', {
-        size: 'invisible',
-      });
-}
 
 export { auth, db, storage, realtimeDb };
