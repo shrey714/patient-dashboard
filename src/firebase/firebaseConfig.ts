@@ -1,0 +1,36 @@
+declare global {
+    interface Window {
+        recaptchaVerifier: any;
+    }
+}
+
+import { initializeApp } from "firebase/app";
+import { getAuth, RecaptchaVerifier } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { getDatabase } from "firebase/database";
+
+const firebaseConfig = {
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+auth.useDeviceLanguage();
+const db = getFirestore(app);
+const storage = getStorage(app);
+const realtimeDb = getDatabase(app);
+
+// Ensure RecaptchaVerifier is initialized only on the client side
+if (typeof window !== 'undefined') {
+    window.recaptchaVerifier = new RecaptchaVerifier(auth,'send-code-button', {
+        size: 'invisible',
+      });
+}
+
+export { auth, db, storage, realtimeDb };
