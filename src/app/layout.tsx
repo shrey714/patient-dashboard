@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Alegreya_Sans } from "next/font/google";
 import "./globals.css";
+import AuthWrapper from "@/components/wrapper/AuthWrapper";
 
 const manrope = Alegreya_Sans({
   subsets: ["latin"],
@@ -25,7 +26,9 @@ export default function RootLayout({
       style={{ scrollbarGutter: "auto" }}
     >
       <body className="min-h-svh" suppressHydrationWarning={true}>
+      <AuthWrapper>
         {children}
+      </AuthWrapper>
       </body>
     </html>
   );
