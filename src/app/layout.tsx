@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Alegreya_Sans } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import AuthWrapper from "@/components/wrapper/AuthWrapper";
 
-const manrope = Alegreya_Sans({
+const DM = DM_Sans({
   subsets: ["latin"],
   display: "swap",
   weight: ["300", "400", "500", "700"],
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={manrope.className}
+      className={DM.className}
       style={{ scrollbarGutter: "auto" }}
     >
       <body className="min-h-svh" suppressHydrationWarning={true}>
