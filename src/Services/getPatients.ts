@@ -1,16 +1,24 @@
-export const getPatients = async (phoneId:string,doctorId:string)=>{
+import toast from 'react-hot-toast';
+
+export const getPatients = async (phoneId: string, doctorId: string) => {
     try {
-        console.log(doctorId)
-        const data = await fetch(`/api/get-patients?phoneId=${phoneId}&doctorId=${doctorId}`,{
+        const response = await fetch(`/api/get-patients?phoneId=${phoneId}&doctorId=${doctorId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
-        })
-        console.log(data)
-        const parsedData = await data.json();
-        return {...parsedData,status:data?.status}
-    } catch (error) {
-        return {error:error}
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to fetch patients');
+        }
+
+        const parsedData = await response.json();
+        return { ...parsedData, status: response.status };
+    } catch (error: any) {
+        toast.error("Unable to fetch patient data. Please try again later.");
+        console.error("Error in getPatients:", error);
+        return { error: error.message };
     }
-}
+};

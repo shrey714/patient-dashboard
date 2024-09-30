@@ -1,15 +1,18 @@
 export const getPatientHistory = async (id: string, uid: string) => {
     try {
-        console.log("oza: ",id,uid)
         const res = await fetch(`/api/get-patient-history?id=${id}&uid=${uid}`, {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
         });
+        if (!res.ok) {
+            throw new Error(res.statusText);
+        }
+
         const data = await res.json();
         return data;
-    } catch (error) {
-        return { error: error };
+    } catch (error: any) {
+        return { error: error.message };
     }
 };

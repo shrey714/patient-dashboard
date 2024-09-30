@@ -6,36 +6,39 @@ import FlickeringGrid from "@/components/AuthPage/FlickeringGrid";
 import Image from "next/image";
 
 const SignIn = () => {
-    interface Window {
-        phoneEmailListener:any;
-      }
+  interface Window {
+    phoneEmailListener: any;
+  }
   const [loading, setloading] = useState(false);
   const router = useRouter();
   useEffect(() => {
     // Load the external script
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = "https://www.phone.email/sign_in_button_v1.js";
     script.async = true;
-    document.querySelector('.pe_signin_button')?.appendChild(script);
+    document.querySelector(".pe_signin_button")?.appendChild(script);
 
     // Define the listener function
-    window.phoneEmailListener = function(userObj: { user_json_url: any;user_phone_number:any; }) {
-        const user_json_url = userObj.user_json_url;
-        // Insert the debug message
-        console.log(userObj)
-        localStorage.setItem("user",userObj.user_phone_number)
-        router.push('/');
-        // document.querySelector('.pe_signin_button')?.insertAdjacentHTML('beforeend', `<span>Phone Verification Successful !! <br />Read the following user_json_url from the backend to get the verified phone number - ${user_json_url} <br /> Please delete this debug message code from the phoneEmailListener function once you implement integration step 2.</span>`);
+    window.phoneEmailListener = function (userObj: {
+      user_json_url: any;
+      user_phone_number: any;
+    }) {
+      const user_json_url = userObj.user_json_url;
+      // Insert the debug message
+      console.log(userObj);
+      localStorage.setItem("user", userObj.user_phone_number);
+      router.push("/");
+      // document.querySelector('.pe_signin_button')?.insertAdjacentHTML('beforeend', `<span>Phone Verification Successful !! <br />Read the following user_json_url from the backend to get the verified phone number - ${user_json_url} <br /> Please delete this debug message code from the phoneEmailListener function once you implement integration step 2.</span>`);
     };
 
     return () => {
-        // Cleanup the listener function when the component unmounts
-        window.phoneEmailListener = null;
+      // Cleanup the listener function when the component unmounts
+      window.phoneEmailListener = null;
     };
-}, []);
+  }, []);
 
   const header = {
-    title: "Welcome to DardiBook",
+    title: "Welcome to DardiBook Patient",
     desc: "Access your DardiBook account to manage appointments, prescriptions, and patient records with ease. Stay connected and streamline your healthcare management.",
   };
   return (
@@ -58,35 +61,11 @@ const SignIn = () => {
             </div>
           </div>
 
-          <div className="z-50 max-h-52 py-8 px-[12.5%] bg-gray-900 w-full flex flex-1 flex-col items-center justify-between rounded-t-3xl overflow-hidden hover:max-h-56 hover:pt-12 hover:px-[calc(12.5%+8px)] hover:w-[calc(100%+16px)] hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] transition-all">
-        <div className="pe_signin_button w-full custom-auth-button" data-client-id="17697786150058695225"></div>
-            
-            {/* <button
-              onClick={handleSignIn}
-              disabled={loading}
-              className="bg-gray-300 border-0 animate-none btn px-5 py-[10px] text-gray-800 outline-none min-w-40 transition-all flex items-center justify-center h-10 text-base sm:text-lg font-bold tracking-wide w-full rounded-full select-none"
-            >
-              {loading ? (
-                <Loader
-                  size="medium"
-                  color="text-gray-300"
-                  secondaryColor="text-primary"
-                />
-              ) : (
-                <>
-                  <Image
-                    alt="Google"
-                    src="/google.svg"
-                    width={20}
-                    height={20}
-                    priority
-                  />
-                  <p className="hidden sm:contents" >Continue with Google</p>
-                  <p className="sm:hidden" >Google</p>
-                </>
-              )}
-            </button> */}
-
+          <div className="z-50 max-h-52 py-8 px-[12.5%] bg-gray-900 w-full flex flex-1 flex-col items-center justify-between rounded-t-3xl overflow-hidden pt-12 shadow-[0_0_20px_2px_rgba(8,_112,_184,_0.7)] transition-all">
+            <div
+              className="pe_signin_button w-full custom-auth-button btn animate-none bg-transparent border-0 hover:bg-transparent rounded-full p-0 m-0"
+              data-client-id="17697786150058695225"
+            ></div>
             <Image
               alt="Logo"
               src="/Logo.svg"

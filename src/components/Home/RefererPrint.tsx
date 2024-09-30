@@ -19,8 +19,8 @@ interface PatientInfo {
 interface HospitalInfo {
   doctorName?: string | "";
   clinicName?: string | "";
-  degree? :string | ""; 
-  registrationNumber? :string | ""; 
+  degree?: string | "";
+  registrationNumber?: string | "";
   emailId?: string | "";
   clinicNumber?: string | "";
   clinicAddress?: string | "";
@@ -32,6 +32,7 @@ interface RefererInfo {
   doctorName: string;
   hospitalName: string;
   referMessage: string;
+  time: any;
 }
 
 interface Props {
@@ -45,6 +46,7 @@ const RefererPrint = forwardRef<HTMLDivElement, Props>((props, ref) => {
 
   return (
     <div
+      style={{ aspectRatio: "1/1.414", width: "80%" }}
       ref={ref}
       className="relative print-container px-8 py-4 font-sans max-w-[800px] mx-auto"
     >
@@ -67,7 +69,7 @@ const RefererPrint = forwardRef<HTMLDivElement, Props>((props, ref) => {
       <div className="mb-4">
         <h3 className="text-xl font-semibold mb-2">Patient Information</h3>
         <table className="w-full border-collapse border border-gray-400">
-        <tbody>
+          <tbody>
             <tr>
               <td className="border border-gray-400 p-1 pl-2 font-medium">
                 ID
@@ -82,7 +84,7 @@ const RefererPrint = forwardRef<HTMLDivElement, Props>((props, ref) => {
               </td>
               <td className="border border-gray-400 p-1 pl-2">
                 {new Date(
-                  patientInfo?.last_visited ? patientInfo?.last_visited : ""
+                  refererInfo?.time ? refererInfo?.time : ""
                 ).toLocaleString("en-GB")}
               </td>
             </tr>
@@ -170,7 +172,7 @@ const RefererPrint = forwardRef<HTMLDivElement, Props>((props, ref) => {
       </div>
 
       <div className="text-right mt-0">
-      <img
+        <img
           src={hospitalInfo?.signaturePhoto}
           alt="Doctor Signature"
           className="w-12 inline-block mt-2"
@@ -185,7 +187,7 @@ const RefererPrint = forwardRef<HTMLDivElement, Props>((props, ref) => {
       </div>
 
       <div
-        className="fixed top-[25%] left-[25%] w-[50%] h-[50%] bg-cover opacity-20 z-[-1]"
+        className="fixed top-[25%] left-[25%] w-[50%] h-[50%] bg-cover opacity-20 z-[1]"
         style={{ backgroundImage: "url(/Logo.svg)" }}
       ></div>
     </div>

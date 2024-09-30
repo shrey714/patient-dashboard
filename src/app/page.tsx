@@ -5,13 +5,13 @@ import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
-  useEffect(()=>{
+  useEffect(() => {
     const user = localStorage.getItem("user");
-    if(user){
-      router.push("/dashboard")
+    if (user) {
+      router.replace("/home");
     }
-  })
-  
+  });
+
   return (
     <div className="w-screen h-svh overflow-hidden flex items-center justify-center bg-white z-50">
       <Loader

@@ -37,6 +37,7 @@ interface PrescriptionInfo {
   medicines: Medicine[];
   advice: string;
   nextVisit: string;
+  time: any;
 }
 
 interface HospitalInfo {
@@ -102,6 +103,7 @@ const PrescriptionPrint = forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (
     <div
       ref={ref}
+      style={{ aspectRatio: "1/1.414" }}
       className="relative print-container px-8 py-4 font-sans max-w-[800px] mx-auto"
     >
       <div className="flex justify-between items-center mb-4">
@@ -138,7 +140,7 @@ const PrescriptionPrint = forwardRef<HTMLDivElement, Props>((props, ref) => {
               </td>
               <td className="border border-gray-400 p-1 pl-2">
                 {new Date(
-                  patientInfo?.last_visited ? patientInfo?.last_visited : ""
+                  prescriptionInfo?.time ? prescriptionInfo?.time : ""
                 ).toLocaleString("en-GB")}
               </td>
             </tr>
@@ -310,7 +312,7 @@ const PrescriptionPrint = forwardRef<HTMLDivElement, Props>((props, ref) => {
       </div>
 
       <div
-        className="fixed top-[25%] left-[25%] w-[50%] h-[50%] bg-cover opacity-20 z-[-1]"
+        className="fixed top-[25%] left-[25%] w-[50%] h-[50%] bg-cover opacity-20 z-[1]"
         style={{ backgroundImage: "url(/Logo.svg)" }}
       ></div>
     </div>
