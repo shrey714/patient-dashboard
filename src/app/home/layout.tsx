@@ -4,14 +4,14 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Patient Authentication",
-  description: "Authenticate Patient with phone number",
+  title: "DardiBook Dashboard",
+  description: "DardiBook Dashboard",
 };
 export default function RootLayout({ children }: { children?: ReactNode }) {
   return (
     <div className="pt-[116px]">
       <Navbar />
-      <div className="z-30 fixed breadcrumbs flex flex-row items-center gap-1 sm:gap-2 text-xs font-medium top-[72px] shadow-sm max-w-[calc(100%-32px)] mx-4 bg-white w-fit py-[7px] px-2 rounded-lg">
+      {/* <div className="rounded-lg z-30 fixed breadcrumbs flex flex-row items-center gap-1 sm:gap-2 text-xs font-medium top-[72px] shadow-sm max-w-[calc(100%-32px)] mx-4 bg-white w-fit py-[7px] px-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children?: ReactNode }) {
           />
         </svg>{" "}
         9999999999
-      </div>
+      </div> */}
       {children}
       <Footer />
     </div>

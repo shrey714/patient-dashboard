@@ -145,7 +145,7 @@ const StepOne = ({
               type="text"
               name="patient_id"
               id="patient_id"
-              placeholder="Select..."
+              placeholder="Patient id..."
               value={patientId}
               onChange={(e) => {
                 setpatientId(e.target.value.trim());

@@ -147,26 +147,29 @@ export default function StepperComponent() {
         <Step step={2} currentStep={step} />
         <Step step={3} currentStep={step} />
       </div>
-      <button
-        onClick={handleBack}
-        className={`${
-          step === 1 ? "pointer-events-none opacity-0" : ""
-        } z-30 fixed breadcrumbs flex flex-row items-center gap-1 text-xs font-medium top-[72px] right-0 shadow-sm max-w-[calc(100%-32px)] mx-4 bg-white w-fit py-[7px] px-2 rounded-lg active:bg-black/10 sm:hover:bg-black/10 duration-200 border-gray-800/70 border-2`}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          className="size-4"
+
+      {/* className="rounded-b-lg text-white flex flex-row items-center gap-1 sm:gap-2 text-xs font-medium bg-gray-700 border-gray-800 border-4 border-t-0 w-fit py-[7px] px-2"> */}
+      <div className="z-40 rounded-b-lg fixed bg-gray-800 border-4 border-t-0 border-gray-800 top-[64px] right-0 mx-4">
+        <button
+          onClick={handleBack}
+          // disabled={step === 1 ? true : false}
+          className={`${
+            step === 1 ? "pointer-events-none text-gray-100/50" : "text-white"
+          } breadcrumbs rounded-md flex flex-row items-center gap-1 text-xs font-medium bg-gray-700 w-fit py-[7px] px-2 active:bg-gray-800 sm:hover:bg-gray-800 duration-100`}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15.75 19.5 8.25 12l7.5-7.5"
-          />
-        </svg>
-        Back
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="4 4 16 16"
+            strokeWidth="1.5"
+            className="size-4 currentColor"
+            fill="currentColor"
+            overflow="visible"
+          >
+            <path d="M12.29 8.71L9.7 11.3c-.39.39-.39 1.02 0 1.41l2.59 2.59c.63.63 1.71.18 1.71-.71V9.41c0-.89-1.08-1.33-1.71-.7"></path>
+          </svg>
+          Back
+        </button>
+      </div>
       {/* Dynamic content based on `step` */}
       <div className="relative">
         <motion.div

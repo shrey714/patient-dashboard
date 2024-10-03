@@ -66,3 +66,35 @@ body {
   width: 100%;
   height: 48px;
 }
+
+@media (max-width: 640px) {
+  .custom-zoom {
+    zoom: 50%;
+  }
+}
+
+/* inv radius */
+
+
+.special-box-1 {
+  --_size: 8px;
+  --_corner-color: #1f2937 ;
+  content: "";
+  width: var(--_size);
+  aspect-ratio: 1;
+  background-image: radial-gradient(circle at 100% 100%,
+      transparent var(--_size),
+      var(--_corner-color, white) calc(var(--_size) + 0.5px));
+}
+
+.special-box-2 {
+  --_size: 8px;
+  --_corner-color: #1f2937 ;
+  content: "";
+  width: var(--_size);
+  aspect-ratio: 1;
+  background-image: radial-gradient(circle at 0% 100%,
+      transparent var(--_size),
+      var(--_corner-color) calc(var(--_size) + 0.5px));
+}
+
