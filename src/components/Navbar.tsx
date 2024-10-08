@@ -1,7 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Loader from "./common/Loader";
+import { getUserID, removeUserID } from "@/utils";
 const Navbar = () => {
+  const [loading, setloading] = useState(false);
+  const [userID, setuserID] = useState("");
+  useEffect(() => {
+    const getAndSetUserID = async () => {
+      const id = await getUserID();
+      setuserID(id);
+    };
+    getAndSetUserID();
+  }, []);
+
+  const logOut = () => {
+    setloading(true);
+    setTimeout(() => {
+      removeUserID();
+      window.location.reload();
+      setloading(false);
+    }, 2000);
+  };
+
   return (
     <nav className="z-40 fixed w-full top-0 start-0 py-4">
       <div className="rounded-t-lg py-2 bg-gray-800 max-w-[calc(100%-32px)] flex flex-wrap items-center justify-between mx-auto px-4">
@@ -44,29 +66,42 @@ const Navbar = () => {
             className="z-[1] menu menu-sm dropdown-content bg-gray-800 rounded-lg mt-11 w-52 px-4 py-4 shadow"
           >
             <li className="cursor-none">
-              <p className="rounded-box py-2 justify-between text-white bg-gray-700 hover:bg-gray-700 border-gray-700">
-                9999999999
+              <p className="rounded-lg py-2 justify-between text-white bg-gray-700 hover:bg-gray-700 border-gray-700">
+                {userID}
                 <span className="badge">ID</span>
               </p>
             </li>
             <li>
-              <a className="flex flex-row justify-center gap-1 font-semibold rounded-box py-2 mt-2 border-2 hover:bg-transparent text-red-600 hover:bg-gray-700 border-gray-700">
-                <p>Logout</p>
-
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+              <a
+                onClick={logOut}
+                className="flex flex-row justify-center gap-1 font-semibold rounded-lg py-2 mt-2 border-2 text-red-600 hover:bg-gray-700 border-gray-700"
+              >
+                {loading ? (
+                  <Loader
+                    size="small"
+                    color="text-primary"
+                    secondaryColor="text-gray-300"
                   />
-                </svg>
+                ) : (
+                  <>
+                    <p>Logout</p>
+
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                      />
+                    </svg>
+                  </>
+                )}
               </a>
             </li>
           </ul>
@@ -88,7 +123,7 @@ const Navbar = () => {
                 d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
               />
             </svg>{" "}
-            9999999999
+            {userID}
           </div>
         </div>
 

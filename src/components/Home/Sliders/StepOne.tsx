@@ -1,7 +1,8 @@
 import Loader from "@/components/common/Loader";
 import { getPatientHistory } from "@/Services/getPatientHistory";
 import { getPatients } from "@/Services/getPatients";
-import React, { useEffect, useState } from "react";
+import { getUserID } from "@/utils";
+import React, { useState } from "react";
 import Select from "react-dropdown-select";
 import toast from "react-hot-toast";
 const StepOne = ({
@@ -23,7 +24,7 @@ const StepOne = ({
       const fetch = async () => {
         try {
           setSubmitLoader(true);
-          const phoneId = localStorage.getItem("user");
+          const phoneId = await getUserID();
 
           if (phoneId) {
             const data = await getPatients(phoneId, selectedHospitalId);

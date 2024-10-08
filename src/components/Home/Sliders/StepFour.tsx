@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 
 import { useTabs } from "@/components/common/TabsLayout/hooks/use-tabs";

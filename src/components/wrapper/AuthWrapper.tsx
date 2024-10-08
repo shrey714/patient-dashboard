@@ -3,6 +3,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import TopBarProgress from "react-topbar-progress-indicator";
+import { getUserID } from "@/utils";
 
 TopBarProgress.config({
   barColors: {
@@ -21,17 +22,18 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Load the external script
-    const user = localStorage.getItem("user");
-    if (!user) {
-      router.push("/signin");
-    }
-    setloading(false);
-  }, []);
+    const initialize = async () => {
+      const user = await getUserID();
+      if (!user) {
+        router.replace("/signin");
+        setloading(false);
+      } else {
+        setloading(false);
+      }
+    };
+    initialize();
+  }, [router]);
 
-  const header = {
-    title: "Welcome to DardiBook",
-    desc: "Access your DardiBook account to manage appointments, prescriptions, and patient records with ease. Stay connected and streamline your healthcare management.",
-  };
   return loading ? (
     <div className="w-screen h-svh overflow-hidden flex items-center justify-center bg-white">
       <div>{loading && <TopBarProgress />}</div>

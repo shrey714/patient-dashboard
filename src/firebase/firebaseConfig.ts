@@ -1,11 +1,5 @@
-declare global {
-    interface Window {
-        recaptchaVerifier: any;
-    }
-}
-
 import { initializeApp } from "firebase/app";
-import { getAuth, RecaptchaVerifier } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getDatabase } from "firebase/database";

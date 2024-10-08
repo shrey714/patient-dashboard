@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export default function Home() {
   const router = useRouter();
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = localStorage.getItem("dpID");
     if (user) {
       router.replace("/home");
     }
