@@ -21,7 +21,6 @@ export const GET = async(request:NextRequest)=>{
         return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
       }
       const prescriptionData = snapshot.data();
-    console.log(prescriptionData);
     return NextResponse.json({ data: prescriptionData }, { status: 200 });
 
 }

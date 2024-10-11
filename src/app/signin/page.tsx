@@ -23,7 +23,6 @@ const SignIn = () => {
       user_json_url: any;
       user_phone_number: any;
     }) {
-      console.log(userObj);
       await setUserID(userObj.user_phone_number);
       router.replace("/");
       // document.querySelector('.pe_signin_button')?.insertAdjacentHTML('beforeend', `<span>Phone Verification Successful !! <br />Read the following user_json_url from the backend to get the verified phone number - ${user_json_url} <br /> Please delete this debug message code from the phoneEmailListener function once you implement integration step 2.</span>`);

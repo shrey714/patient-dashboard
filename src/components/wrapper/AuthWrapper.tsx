@@ -26,9 +26,14 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
       const user = await getUserID();
       if (!user) {
         router.replace("/signin");
-        setloading(false);
+        setTimeout(() => {
+          setloading(false);
+        }, 500);
       } else {
-        setloading(false);
+        router.replace("/home");
+        setTimeout(() => {
+          setloading(false);
+        }, 500);
       }
     };
     initialize();
