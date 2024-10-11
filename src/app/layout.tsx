@@ -30,7 +30,7 @@ export default function RootLayout({
       className={DM.className}
       style={{ scrollbarGutter: "auto" }}
     >
-      <body className="min-h-screen" suppressHydrationWarning={true}>
+      <body className="min-h-svh" suppressHydrationWarning={true}>
         <Toaster position="top-center" />
         <AuthWrapper>{children}</AuthWrapper>
       </body>

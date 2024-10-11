@@ -2,6 +2,7 @@ import Loader from "@/components/common/Loader";
 import { getPatientHistory } from "@/Services/getPatientHistory";
 import { getPatients } from "@/Services/getPatients";
 import { getUserID } from "@/utils";
+import Image from "next/image";
 import React, { useState } from "react";
 import Select from "react-dropdown-select";
 import toast from "react-hot-toast";
@@ -34,7 +35,7 @@ const StepOne = ({
             }
 
             if (data && data.data.length === 0) {
-              toast.error("No user available in this hospital.");
+              toast.error("Patient ID is not found in this hospital.");
             } else {
               setpatients(data.data);
               handleNext(2);
@@ -107,6 +108,16 @@ const StepOne = ({
           autoComplete="off"
           noValidate={false}
         >
+          <div className="mb-1 sm:mb-5 w-full flex items-center justify-center">
+            <Image
+              width={100}
+              height={100}
+              className="rounded-md border-[#667085] border-2 size-[100px] overflow-hidden object-fill"
+              src={selectedHospital?.clinicLogo || "/Hospital.svg"}
+              alt={"Hospital Image"}
+            />
+          </div>
+
           <div className="sm:pb-4 grid sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-1 sm:gap-3 px-1 sm:px-6">
             <label
               htmlFor="hospital_name"
