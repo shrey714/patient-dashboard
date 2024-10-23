@@ -1,6 +1,6 @@
 "use client";
 import { ReactNode, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import TopBarProgress from "react-topbar-progress-indicator";
 import { getUserID } from "@/utils";
@@ -19,18 +19,19 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
   }
   const [loading, setloading] = useState(true);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     // Load the external script
     const initialize = async () => {
       const user = await getUserID();
       if (!user) {
-        router.replace("/signin");
+        router.replace(`/signin?${searchParams.toString()}`);
         setTimeout(() => {
           setloading(false);
         }, 500);
       } else {
-        router.replace("/home");
+        router.replace(`/home?${searchParams.toString()}`);
         setTimeout(() => {
           setloading(false);
         }, 500);

@@ -7,12 +7,21 @@ import StepTwo from "@/components/Home/Sliders/StepTwo";
 import StepThree from "@/components/Home/Sliders/StepThree";
 import StepFour from "@/components/Home/Sliders/StepFour";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
 export default function StepperComponent() {
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(0); // 1 for next, -1 for back
   const [history, setHistory] = useState<number[]>([]); // To track step history
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const hospitalId = searchParams.get("hospitalId");
+  const patientId = searchParams.get("patientId");
+  const prescriptionId = searchParams.get("prescriptionId");
+
+  // =================== back button login ===============
+
   useEffect(() => {
     const handlePopState = () => {
       if (step === 1) {
@@ -38,14 +47,16 @@ export default function StepperComponent() {
   }, [step, history]);
 
   // =========================================
-  const [selectedPatientId, setselectedPatientId] = useState("");
-  const [selectedHospitalId, setselectedHospitalId] = useState("");
+  const [selectedPatientId, setselectedPatientId] = useState(patientId || "");
+  const [selectedHospitalId, setselectedHospitalId] = useState(
+    hospitalId || ""
+  );
   const [patients, setpatients] = useState([]);
   const [hospitals, sethospitals] = useState<any | null>(null);
   const [prescriptions, setPrescriptions] = useState<any | null>(null);
   const [selectedPrescriptionId, setselectedPrescriptionId] = useState<
     any | null
-  >(null);
+  >(prescriptionId || null);
 
   useEffect(() => {
     const fetchHospitals = async () => {
@@ -81,7 +92,10 @@ export default function StepperComponent() {
             setPrescriptions={setPrescriptions}
             selectedHospitalId={selectedHospitalId}
             setselectedHospitalId={setselectedHospitalId}
+            setselectedPrescriptionId={setselectedPrescriptionId}
             setselectedPatientId={setselectedPatientId}
+            selectedPatientId={selectedPatientId}
+            selectedPrescriptionId={selectedPrescriptionId}
           />
         );
       case 2:

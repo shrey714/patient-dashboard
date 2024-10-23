@@ -19,7 +19,7 @@ const Navbar = () => {
     setloading(true);
     setTimeout(() => {
       removeUserID();
-      window.location.reload();
+      window.location.assign("/");
       setloading(false);
     }, 2000);
   };

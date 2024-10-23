@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 // import Loader from "@/components/common/Loader";
 import FlickeringGrid from "@/components/AuthPage/FlickeringGrid";
 import Image from "next/image";
@@ -11,6 +11,8 @@ const SignIn = () => {
     phoneEmailListener: any;
   }
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   useEffect(() => {
     // Load the external script
     const script = document.createElement("script");
@@ -24,7 +26,7 @@ const SignIn = () => {
       user_phone_number: any;
     }) {
       await setUserID(userObj.user_phone_number);
-      router.replace("/");
+      router.replace(`/home?${searchParams.toString()}`);
       // document.querySelector('.pe_signin_button')?.insertAdjacentHTML('beforeend', `<span>Phone Verification Successful !! <br />Read the following user_json_url from the backend to get the verified phone number - ${user_json_url} <br /> Please delete this debug message code from the phoneEmailListener function once you implement integration step 2.</span>`);
     };
 
