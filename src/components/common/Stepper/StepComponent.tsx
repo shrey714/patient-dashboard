@@ -8,9 +8,12 @@ import StepThree from "@/components/Home/Sliders/StepThree";
 import StepFour from "@/components/Home/Sliders/StepFour";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
+import { getUserID } from "@/utils";
+import { getPatients } from "@/Services/getPatients";
+import { getPatientHistory } from "@/Services/getPatientHistory";
 
-export default function StepperComponent() {
-  const [step, setStep] = useState(1);
+export default function StepperComponent({urlStep,hid,paid,prid}:any) {
+  const [step, setStep] = useState(urlStep);
   const [direction, setDirection] = useState(0); // 1 for next, -1 for back
   const [history, setHistory] = useState<number[]>([]); // To track step history
   const router = useRouter();
@@ -19,6 +22,9 @@ export default function StepperComponent() {
   const hospitalId = searchParams.get("hospitalId");
   const patientId = searchParams.get("patientId");
   const prescriptionId = searchParams.get("prescriptionId");
+  const [loadingPatient, setLoadingPatient] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   // =================== back button login ===============
 
@@ -47,16 +53,77 @@ export default function StepperComponent() {
   }, [step, history]);
 
   // =========================================
-  const [selectedPatientId, setselectedPatientId] = useState(patientId || "");
+  const [selectedPatientId, setselectedPatientId] = useState(patientId || paid || "");
   const [selectedHospitalId, setselectedHospitalId] = useState(
-    hospitalId || ""
+    hospitalId || hid || ""
   );
   const [patients, setpatients] = useState([]);
   const [hospitals, sethospitals] = useState<any | null>(null);
   const [prescriptions, setPrescriptions] = useState<any | null>(null);
-  const [selectedPrescriptionId, setselectedPrescriptionId] = useState<
-    any | null
-  >(prescriptionId || null);
+  const [selectedPrescriptionId, setselectedPrescriptionId] = useState(prescriptionId || prid || "");
+
+  const fetchPatients = async () => {
+    try {
+      // setSubmitLoader(true);
+      const phoneId = await getUserID();
+
+      if (phoneId) {
+        const data = await getPatients(phoneId, selectedHospitalId);
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        if (data && data.data.length === 0) {
+          toast.error("Patient ID is not found in this hospital.");
+        } else {
+          setpatients(data.data);
+          // router.push(`/home/selectPatient?hid=${selectedHospitalId}`)
+          console.log("2")
+          // handleNext(2);
+        }
+      } else {
+        toast.error("No user phone ID found. Please log in again.");
+      }
+    } catch (error) {
+      toast.error(
+        "Error in fetching patient data. Please try again later."
+      );
+      console.error("Error in fetching patient data:", error);
+    } finally {
+      // setSubmitLoader(false);
+    }
+  };
+
+  const fetchPrescriptions = async (patientId: string) => {
+    try {
+      setLoadingPatient((prev) => ({ ...prev, [patientId]: true }));
+      setselectedPatientId(patientId);
+
+      const prescriptionData = await getPatientHistory(
+        patientId,
+        selectedHospitalId
+      );
+
+      if (prescriptionData.error) {
+        throw new Error(prescriptionData.error);
+      }
+      if (prescriptionData?.patient?.length === 0) {
+        toast.error("No patient available in this hospital.");
+      } else if (prescriptionData?.prescriptions?.length === 0) {
+        toast.error("No prescriptions available for this patient.");
+      } else {
+        setPrescriptions(prescriptionData?.prescriptions);
+        // router.push(`/home/selectPrescription?hid=${selectedHospitalId}&paid=${patientId}`)
+
+        // handleNext(3);
+      }
+    } catch (error: any) {
+      toast.error(error?.message);
+    } finally {
+      setLoadingPatient((prev) => ({ ...prev, [patientId]: false }));
+    }
+  };
 
   useEffect(() => {
     const fetchHospitals = async () => {
@@ -74,9 +141,18 @@ export default function StepperComponent() {
         sethospitals([]);
       }
     };
-    fetchHospitals();
+    if(urlStep==1 || urlStep==4)fetchHospitals();
+    if(urlStep==2 || urlStep==4)fetchPatients();
+    if(urlStep==3 || urlStep==4)fetchPrescriptions(selectedPatientId);
+    console.log(patients)
+    let x = patients?.find(
+      (pat: any) => pat.patient_unique_Id === selectedPatientId
+    )
+    console.log("hey = ",x)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  
 
   // =========================================
 

@@ -1,5 +1,6 @@
 import Loader from "@/components/common/Loader";
 import { getPatientHistory } from "@/Services/getPatientHistory";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -13,6 +14,7 @@ const StepTwo = ({
   const [loadingPatient, setLoadingPatient] = useState<{
     [key: string]: boolean;
   }>({});
+  const router = useRouter();
 
   const fetchPrescriptions = async (patientId: string) => {
     try {
@@ -33,7 +35,9 @@ const StepTwo = ({
         toast.error("No prescriptions available for this patient.");
       } else {
         setPrescriptions(prescriptionData?.prescriptions);
-        handleNext(3);
+        router.push(`/home/selectPrescription?hid=${selectedHospitalId}&paid=${patientId}`)
+
+        // handleNext(3);
       }
     } catch (error: any) {
       toast.error(error?.message);

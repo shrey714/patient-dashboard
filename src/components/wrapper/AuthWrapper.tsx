@@ -31,7 +31,8 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
           setloading(false);
         }, 500);
       } else {
-        router.replace(`/home?${searchParams.toString()}`);
+        //check this condition
+        // router.replace(`/home?${searchParams.toString()}`);
         setTimeout(() => {
           setloading(false);
         }, 500);

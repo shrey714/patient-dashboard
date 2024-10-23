@@ -1,10 +1,15 @@
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const StepThree = ({
   prescriptions,
   setselectedPrescriptionId,
+  selectedHospitalId,
+  selectedPatientId,
   handleNext,
 }: any) => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col gap-3">
       {prescriptions?.reverse()?.map((prescription: any, index: number) => {
@@ -13,7 +18,9 @@ const StepThree = ({
             key={index}
             onClick={() => {
               setselectedPrescriptionId(prescription.id);
-              handleNext(4);
+        router.push(`/home/prescription?hid=${selectedHospitalId}&paid=${selectedPatientId}&prid=${prescription.id}`)
+
+              // handleNext(4);
             }}
             className="btn w-full animate-none flex flex-row flex-nowrap items-center justify-between"
           >
