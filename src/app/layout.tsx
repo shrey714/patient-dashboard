@@ -28,7 +28,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={DM.className}
-      style={{ scrollbarGutter: "auto" }}
+      style={{ scrollbarGutter: "stable" }}
     >
       <body className="min-h-svh" suppressHydrationWarning={true}>
         <Toaster position="top-center" />

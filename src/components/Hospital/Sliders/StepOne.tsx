@@ -11,7 +11,6 @@ const StepOne = ({
   hospitals,
   setpatients,
   setPrescriptions,
-  handleNext,
   setselectedPatientId,
   setselectedHospitalId,
   setselectedPrescriptionId,
@@ -56,7 +55,7 @@ const StepOne = ({
               toast.error("Patient ID is not found in this hospital.");
             } else {
               setpatients(data.data);
-              router.push(`/home/selectPatient?hid=${selectedHospitalId}`)
+              router.push(`/hospital/${selectedHospitalId}`)
               console.log("2")
               // handleNext(2);
             }
@@ -109,13 +108,11 @@ const StepOne = ({
 
           if (prescriptionExists) {
             setPrescriptions(prescriptionData?.prescriptions);
-            handleNext(4);
           } else {
             toast.error("Selected Prescription ID does not exist.");
           }
         } else {
           setPrescriptions(prescriptionData?.prescriptions);
-          handleNext(3);
         }
       }
     } catch (error: any) {

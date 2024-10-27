@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import FlickeringGrid from "@/components/AuthPage/FlickeringGrid";
 import Image from "next/image";
 import { setUserID } from "@/utils";
+import { Example } from "@/components/common/Text-Typing";
 
 const SignIn = () => {
   interface Window {
@@ -26,7 +27,7 @@ const SignIn = () => {
       user_phone_number: any;
     }) {
       await setUserID(userObj.user_phone_number);
-      router.replace(`/home?${searchParams.toString()}`);
+      router.replace(`${searchParams.get("redirect")}`);
       // document.querySelector('.pe_signin_button')?.insertAdjacentHTML('beforeend', `<span>Phone Verification Successful !! <br />Read the following user_json_url from the backend to get the verified phone number - ${user_json_url} <br /> Please delete this debug message code from the phoneEmailListener function once you implement integration step 2.</span>`);
     };
 
@@ -36,10 +37,6 @@ const SignIn = () => {
     };
   }, []);
 
-  const header = {
-    title: "Welcome to DardiBook Patient",
-    desc: "Access your DardiBook account to manage appointments, prescriptions, and patient records with ease. Stay connected and streamline your healthcare management.",
-  };
   return (
     <>
       <section className="relative bg-gray-300 h-svh w-full overflow-hidden flex justify-center">
@@ -53,10 +50,8 @@ const SignIn = () => {
         />
         <div className="h-svh flex flex-col items-center justify-center w-full sm:w-4/5">
           <div className="z-50 flex flex-1 items-center justify-center">
-            <div className="w-max flex items-center justify-center">
-              <h1 className="h-auto select-none animate-typing overflow-hidden whitespace-nowrap border-r-4 border-r-gray-700 pr-4 sm:pr-8 text-[28px] sm:text-5xl text-gray-800 font-bold">
-                {header.title}
-              </h1>
+            <div className="w-full flex-col flex items-center justify-center">
+              <Example />
             </div>
           </div>
 

@@ -5,5 +5,6 @@ export const metadata: Metadata = {
   description: "Select Patient from selected hospital",
 };
 export default function RootLayout({ children }: { children?: ReactNode }) {
+  console.log("temp console");
   return <div>{children}</div>;
 }

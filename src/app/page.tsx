@@ -3,12 +3,12 @@ import Loader from "@/components/common/Loader";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function Home() {
+export default function Hospital() {
   const router = useRouter();
   useEffect(() => {
     const user = localStorage.getItem("dpID");
     if (user) {
-      router.replace("/home");
+      router.replace("/hospital");
     }
   });
 
