@@ -3,6 +3,7 @@ import { getPatientHistory } from "@/Services/getPatientHistory";
 import { getPatients } from "@/Services/getPatients";
 import { getUserID } from "@/utils";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import Select from "react-dropdown-select";
 import toast from "react-hot-toast";
@@ -10,7 +11,6 @@ const StepOne = ({
   hospitals,
   setpatients,
   setPrescriptions,
-  handleNext,
   setselectedPatientId,
   setselectedHospitalId,
   setselectedPrescriptionId,
@@ -25,6 +25,7 @@ const StepOne = ({
     selectedPrescriptionId || ""
   );
   const [patientInputRequired, setpatientInputRequired] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (prescriptionId) {
@@ -54,7 +55,9 @@ const StepOne = ({
               toast.error("Patient ID is not found in this hospital.");
             } else {
               setpatients(data.data);
-              handleNext(2);
+              router.push(`/hospital/${selectedHospitalId}`)
+              console.log("2")
+              // handleNext(2);
             }
           } else {
             toast.error("No user phone ID found. Please log in again.");
@@ -105,13 +108,11 @@ const StepOne = ({
 
           if (prescriptionExists) {
             setPrescriptions(prescriptionData?.prescriptions);
-            handleNext(4);
           } else {
             toast.error("Selected Prescription ID does not exist.");
           }
         } else {
           setPrescriptions(prescriptionData?.prescriptions);
-          handleNext(3);
         }
       }
     } catch (error: any) {
