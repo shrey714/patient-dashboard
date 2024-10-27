@@ -36,6 +36,7 @@
   background-color: #d1d5db;
   /* border-radius: 8px; */
   scrollbar-width: thin;
+  display: none;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -78,7 +79,7 @@ body {
 
 .special-box-1 {
   --_size: 8px;
-  --_corner-color: #1f2937 ;
+  --_corner-color: #1f2937;
   content: "";
   width: var(--_size);
   aspect-ratio: 1;
@@ -89,7 +90,7 @@ body {
 
 .special-box-2 {
   --_size: 8px;
-  --_corner-color: #1f2937 ;
+  --_corner-color: #1f2937;
   content: "";
   width: var(--_size);
   aspect-ratio: 1;

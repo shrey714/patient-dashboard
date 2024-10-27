@@ -91,6 +91,7 @@ const PrintWrapper = ({
     documentTitle: `${patientData?.first_name} ${patientData?.last_name}`,
   });
   // const downloadPrint = () => {};
+  // console.log(doctorData)
   return (
     <div className="join-item flex flex-col">
       <div className="w-full flex flex-row justify-end gap-2 sm:pr-10 mb-4">

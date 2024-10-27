@@ -3,25 +3,42 @@ import { getPatientHistory } from "@/Services/getPatientHistory";
 import { getPatients } from "@/Services/getPatients";
 import { getUserID } from "@/utils";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 import Select from "react-dropdown-select";
 import toast from "react-hot-toast";
 const StepOne = ({
   hospitals,
   setpatients,
   setPrescriptions,
-  handleNext,
   setselectedPatientId,
   setselectedHospitalId,
+  setselectedPrescriptionId,
   selectedHospitalId,
+  selectedPatientId,
+  selectedPrescriptionId,
 }: any) => {
+  const formRef = useRef<HTMLFormElement>(null);
   const [submitLoader, setSubmitLoader] = useState(false);
-  const [patientId, setpatientId] = useState("");
+  const [patientId, setpatientId] = useState(selectedPatientId);
+  const [prescriptionId, setprescriptionId] = useState(
+    selectedPrescriptionId || ""
+  );
+  const [patientInputRequired, setpatientInputRequired] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (prescriptionId) {
+      setpatientInputRequired(true);
+    } else {
+      setpatientInputRequired(false);
+    }
+  }, [prescriptionId]);
 
   const handleSearch = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    if (patientId === "") {
+    if (patientId === "" && prescriptionId === "") {
       const fetch = async () => {
         try {
           setSubmitLoader(true);
@@ -38,7 +55,9 @@ const StepOne = ({
               toast.error("Patient ID is not found in this hospital.");
             } else {
               setpatients(data.data);
-              handleNext(2);
+              router.push(`/hospital/${selectedHospitalId}`)
+              console.log("2")
+              // handleNext(2);
             }
           } else {
             toast.error("No user phone ID found. Please log in again.");
@@ -54,14 +73,18 @@ const StepOne = ({
       };
       fetch();
     } else {
-      fetchPrescriptions(patientId);
+      fetchPrescriptions(patientId, prescriptionId);
     }
   };
 
-  const fetchPrescriptions = async (patientId: string) => {
+  const fetchPrescriptions = async (
+    patientId: string,
+    prescriptionId: string
+  ) => {
     try {
       setSubmitLoader(true);
       setselectedPatientId(patientId);
+      setselectedPrescriptionId(prescriptionId);
 
       const prescriptionData = await getPatientHistory(
         patientId,
@@ -76,8 +99,21 @@ const StepOne = ({
       } else if (prescriptionData?.prescriptions?.length === 0) {
         toast.error("No prescriptions available for this patient.");
       } else {
-        setPrescriptions(prescriptionData?.prescriptions);
-        handleNext(3);
+        // setpatients(prescriptionData?.patient);
+        console.log("prescriptionData?.patient=", prescriptionData?.patient);
+        if (prescriptionId !== "") {
+          const prescriptionExists = prescriptionData?.prescriptions?.some(
+            (prescription: any) => prescription.id === prescriptionId
+          );
+
+          if (prescriptionExists) {
+            setPrescriptions(prescriptionData?.prescriptions);
+          } else {
+            toast.error("Selected Prescription ID does not exist.");
+          }
+        } else {
+          setPrescriptions(prescriptionData?.prescriptions);
+        }
       }
     } catch (error: any) {
       toast.error(error?.message);
@@ -107,6 +143,7 @@ const StepOne = ({
           autoFocus={true}
           autoComplete="off"
           noValidate={false}
+          ref={formRef}
         >
           <div className="mb-1 sm:mb-5 w-full flex items-center justify-center">
             <Image
@@ -150,7 +187,11 @@ const StepOne = ({
               className="text-base font-medium text-gray-900 flex items-center sm:justify-center gap-1"
             >
               Enter patient id{" "}
-              <p className="text-gray-400 text-xs">(optional)</p>
+              {patientInputRequired ? (
+                <p className="text-red-500">*</p>
+              ) : (
+                <p className="text-gray-400 text-xs">(optional)</p>
+              )}
             </label>
 
             <input
@@ -162,6 +203,29 @@ const StepOne = ({
               onChange={(e) => {
                 setpatientId(e.target.value.trim());
               }}
+              required={patientInputRequired}
+              className="form-input border-2 rounded-lg bg-gray-200 font-medium w-full lg:max-w-md placeholder:font-medium placeholder:text-[#9ca3af] placeholder:text-[13.35px] pl-[17px]"
+            />
+          </div>
+
+          <div className="mt-2 sm:pb-4 grid sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-1 sm:gap-3 px-1 sm:px-6">
+            <label
+              htmlFor="prescription_id"
+              className="text-base font-medium text-gray-900 flex items-center sm:justify-center gap-1"
+            >
+              Enter prescription id{" "}
+              <p className="text-gray-400 text-xs">(optional)</p>
+            </label>
+
+            <input
+              type="text"
+              name="prescription_id"
+              id="prescription_id"
+              placeholder="prescription id..."
+              value={prescriptionId}
+              onChange={(e) => {
+                setprescriptionId(e.target.value.trim());
+              }}
               className="form-input border-2 rounded-lg bg-gray-200 font-medium w-full lg:max-w-md placeholder:font-medium placeholder:text-[#9ca3af] placeholder:text-[13.35px] pl-[17px]"
             />
           </div>
@@ -171,7 +235,11 @@ const StepOne = ({
               type="button"
               onClick={() => {
                 setpatientId("");
+                setprescriptionId("");
+                setpatientInputRequired(false);
                 setselectedHospitalId("");
+                setselectedPatientId("");
+                setselectedPrescriptionId("");
               }}
               className="btn animate-none border-2 btn-outline rounded-full min-h-min h-min py-2 px-7 text-xs leading-none"
             >
