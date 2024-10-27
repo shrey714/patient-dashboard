@@ -55,8 +55,8 @@ const StepOne = ({
               toast.error("Patient ID is not found in this hospital.");
             } else {
               setpatients(data.data);
-              router.push(`/hospital/${selectedHospitalId}`)
-              console.log("2")
+              router.push(`/hospital/${selectedHospitalId}`);
+              console.log("2");
               // handleNext(2);
             }
           } else {
@@ -100,18 +100,22 @@ const StepOne = ({
         toast.error("No prescriptions available for this patient.");
       } else {
         // setpatients(prescriptionData?.patient);
-        console.log("prescriptionData?.patient=", prescriptionData?.patient);
         if (prescriptionId !== "") {
           const prescriptionExists = prescriptionData?.prescriptions?.some(
             (prescription: any) => prescription.id === prescriptionId
           );
 
           if (prescriptionExists) {
+            console.log("here==");
+            router.push(
+              `/hospital/${selectedHospitalId}/${patientId}/${prescriptionId}`
+            );
             setPrescriptions(prescriptionData?.prescriptions);
           } else {
             toast.error("Selected Prescription ID does not exist.");
           }
         } else {
+          router.push(`/hospital/${selectedHospitalId}/${patientId}`);
           setPrescriptions(prescriptionData?.prescriptions);
         }
       }
