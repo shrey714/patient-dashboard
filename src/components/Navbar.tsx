@@ -4,9 +4,13 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Loader from "./common/Loader";
 import { getUserID, removeUserID } from "@/utils";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 const Navbar = () => {
   const [loading, setloading] = useState(false);
   const [userID, setuserID] = useState("");
+  const [hidden, sethidden] = useState(false);
+  const windowsHeight = window.innerWidth;
+  const { scrollY } = useScroll();
   useEffect(() => {
     const getAndSetUserID = async () => {
       const id = await getUserID();
@@ -14,6 +18,14 @@ const Navbar = () => {
     };
     getAndSetUserID();
   }, []);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest > 64) {
+      sethidden(true);
+    } else {
+      sethidden(false);
+    }
+  });
 
   const logOut = () => {
     setloading(true);
@@ -25,8 +37,38 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="z-40 fixed w-full top-0 start-0 pt-4">
-      <div className="rounded-lg py-2 bg-gray-800 max-w-[calc(100%-32px)] flex flex-wrap items-center justify-between mx-auto px-4 shadow-lg">
+    <motion.nav
+      layout="preserve-aspect"
+      variants={{
+        visible: { y: 0 },
+        hidden: { y: -17 },
+      }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.15, ease: "easeIn" }}
+      className="z-40 fixed w-full top-0 start-0 pt-4"
+    >
+      <motion.div
+        layout
+        variants={{
+          visible: {
+            maxWidth: windowsHeight - 32,
+            borderRadius: 8,
+            paddingTop: 8,
+            paddingBottom: 8,
+          },
+          hidden: {
+            maxWidth: windowsHeight,
+            borderRadius: 0,
+            paddingTop: 4,
+            paddingBottom: 4,
+          },
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.15, ease: "easeIn" }}
+        className={`bg-gray-800 flex flex-wrap items-center justify-between mx-auto px-4 shadow-lg 
+          
+          `}
+      >
         <Link
           href={"/"}
           className="cursor-pointer flex flex-row items-center mr-3 gap-1 sm:gap-2"
@@ -106,9 +148,8 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-      </div>
-  
-    </nav>
+      </motion.div>
+    </motion.nav>
   );
 };
 
