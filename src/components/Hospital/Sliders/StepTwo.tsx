@@ -5,9 +5,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 const StepTwo = ({
-  setselectedPatientId,
   selectedHospitalId,
-  setPrescriptions,
   patients,
 }: any) => {
   const [loadingPatient, setLoadingPatient] = useState<{
@@ -18,7 +16,6 @@ const StepTwo = ({
   const fetchPrescriptions = async (patientId: string) => {
     try {
       setLoadingPatient((prev) => ({ ...prev, [patientId]: true }));
-      setselectedPatientId(patientId);
 
       const prescriptionData = await getPatientHistory(
         patientId,
@@ -33,7 +30,6 @@ const StepTwo = ({
       } else if (prescriptionData?.prescriptions?.length === 0) {
         toast.error("No prescriptions available for this patient.");
       } else {
-        setPrescriptions(prescriptionData?.prescriptions);
         router.push(`/hospital/${selectedHospitalId}/${patientId}`);
 
         // handleNext(3);

@@ -38,9 +38,6 @@ export default function StepperComponent({ urlStep, hid, paid, prid }: any) {
           toast.error("Patient ID is not found in this hospital.");
         } else {
           setpatients(data.data);
-          // router.push(`/hospital/selectPatient?hid=${selectedHospitalId}`)
-          console.log("2");
-          // handleNext(2);
         }
       } else {
         toast.error("No user phone ID found. Please log in again.");
@@ -99,12 +96,9 @@ export default function StepperComponent({ urlStep, hid, paid, prid }: any) {
     if (urlStep == 1 || urlStep == 4) fetchHospitals();
     if (urlStep == 2 || urlStep == 4) fetchPatients();
     if (urlStep == 3 || urlStep == 4) fetchPrescriptions(selectedPatientId);
-    console.log(patients);
     let x = patients?.find(
       (pat: any) => pat.patient_unique_Id === selectedPatientId
     );
-    console.log("hey = ", x);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // =========================================
@@ -115,9 +109,6 @@ export default function StepperComponent({ urlStep, hid, paid, prid }: any) {
         return (
           <StepOne
             hospitals={hospitals}
-            sethospitals={sethospitals}
-            setpatients={setpatients}
-            setPrescriptions={setPrescriptions}
             selectedHospitalId={selectedHospitalId}
             setselectedHospitalId={setselectedHospitalId}
             setselectedPrescriptionId={setselectedPrescriptionId}
@@ -129,9 +120,7 @@ export default function StepperComponent({ urlStep, hid, paid, prid }: any) {
       case 2:
         return (
           <StepTwo
-            setselectedPatientId={setselectedPatientId}
             selectedHospitalId={selectedHospitalId}
-            setPrescriptions={setPrescriptions}
             patients={patients}
           />
         );
@@ -141,7 +130,6 @@ export default function StepperComponent({ urlStep, hid, paid, prid }: any) {
             selectedPatientId={selectedPatientId}
             selectedHospitalId={selectedHospitalId}
             prescriptions={prescriptions}
-            setselectedPrescriptionId={setselectedPrescriptionId}
           />
         );
       case 4:
