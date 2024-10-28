@@ -9,10 +9,8 @@ import Select from "react-dropdown-select";
 import toast from "react-hot-toast";
 const StepOne = ({
   hospitals,
-  setpatients,
-  setPrescriptions,
-  setselectedPatientId,
   setselectedHospitalId,
+  setselectedPatientId,
   setselectedPrescriptionId,
   selectedHospitalId,
   selectedPatientId,
@@ -54,10 +52,7 @@ const StepOne = ({
             if (data && data.data.length === 0) {
               toast.error("Patient ID is not found in this hospital.");
             } else {
-              setpatients(data.data);
               router.push(`/hospital/${selectedHospitalId}`);
-              console.log("2");
-              // handleNext(2);
             }
           } else {
             toast.error("No user phone ID found. Please log in again.");
@@ -83,7 +78,6 @@ const StepOne = ({
   ) => {
     try {
       setSubmitLoader(true);
-      setselectedPatientId(patientId);
       setselectedPrescriptionId(prescriptionId);
 
       const prescriptionData = await getPatientHistory(
@@ -110,13 +104,11 @@ const StepOne = ({
             router.push(
               `/hospital/${selectedHospitalId}/${patientId}/${prescriptionId}`
             );
-            setPrescriptions(prescriptionData?.prescriptions);
           } else {
             toast.error("Selected Prescription ID does not exist.");
           }
         } else {
           router.push(`/hospital/${selectedHospitalId}/${patientId}`);
-          setPrescriptions(prescriptionData?.prescriptions);
         }
       }
     } catch (error: any) {

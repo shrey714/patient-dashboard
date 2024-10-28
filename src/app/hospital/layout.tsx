@@ -1,12 +1,16 @@
 "use client";
 import { ComponentProps, ReactNode, useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import useMeasure from "react-use-measure";
+import dynamic from "next/dynamic";
 let duration = 0.5;
+const Header = dynamic(() => import("@/components/Navbar"), {
+  ssr: false, // This ensures the component is not SSR'd
+});
+
 export default function RootLayout({ children }: { children?: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -19,7 +23,7 @@ export default function RootLayout({ children }: { children?: ReactNode }) {
 
   return (
     <div className="pt-20">
-      <Navbar />
+      <Header />
       <div className="flex flex-col justify-center items-center w-[calc(100%-32px)] max-w-screen-xl m-auto">
         <div className="mx-auto w-full flex-1 flex-col items-center justify-center">
           <div className="flex px-8 py-3 bg-white rounded-lg shadow-sm">

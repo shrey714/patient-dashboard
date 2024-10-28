@@ -4,7 +4,6 @@ import React from "react";
 
 const StepThree = ({
   prescriptions,
-  setselectedPrescriptionId,
   selectedHospitalId,
   selectedPatientId,
 }: any) => {
@@ -27,7 +26,6 @@ const StepThree = ({
               <button
                 key={index}
                 onClick={() => {
-                  setselectedPrescriptionId(prescription.id);
                   router.push(
                     `/hospital/${selectedHospitalId}/${selectedPatientId}/${prescription.id}`
                   );

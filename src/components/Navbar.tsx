@@ -9,7 +9,7 @@ const Navbar = () => {
   const [loading, setloading] = useState(false);
   const [userID, setuserID] = useState("");
   const [hidden, sethidden] = useState(false);
-  const windowsHeight = window.innerWidth;
+  const windowsWidth = window.innerWidth;
   const { scrollY } = useScroll();
   useEffect(() => {
     const getAndSetUserID = async () => {
@@ -51,13 +51,13 @@ const Navbar = () => {
         layout
         variants={{
           visible: {
-            maxWidth: windowsHeight - 32,
+            maxWidth: windowsWidth - 32,
             borderRadius: 8,
             paddingTop: 8,
             paddingBottom: 8,
           },
           hidden: {
-            maxWidth: windowsHeight,
+            maxWidth: windowsWidth,
             borderRadius: 0,
             paddingTop: 4,
             paddingBottom: 4,
