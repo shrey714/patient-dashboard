@@ -6,9 +6,22 @@ import PrintWrapper from "@/components/wrapper/PrintWrapper";
 import PrescriptionPrint from "../../Print/PrescriptionPrint";
 import RefererPrint from "../../Print/RefererPrint";
 import Loader from "@/components/common/Loader";
+import html2canvas from 'html2canvas-pro';
+import jsPDF from 'jspdf';
 
 const StepFour = ({ doctorData, patientData, prescriptionData }: any) => {
   const [hookProps, sethookProps] = useState<any>(null);
+  const handleDownloadPDF = (pdfName:string) => {
+    const input:any = document.getElementById('pdf'); 
+    html2canvas(input).then((canvas) => {
+      const imgData:any = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      pdf.addImage(imgData,'png',15, 40, 180, 160);
+      pdf.save(`${pdfName}.pdf`); 
+    }).catch(e=>{
+      throw new Error(e)
+    })
+  };
   useEffect(() => {
     if (patientData && doctorData && prescriptionData) {
       sethookProps({
@@ -20,6 +33,9 @@ const StepFour = ({ doctorData, patientData, prescriptionData }: any) => {
                 doctorData={doctorData}
                 patientData={patientData}
                 time={prescriptionData?.time}
+                handleDownloadPDF={handleDownloadPDF}
+                id="pdf"
+                tabId="Prescription"
               >
                 <PrescriptionPrint prescriptionInfo={prescriptionData} />
               </PrintWrapper>
@@ -33,6 +49,9 @@ const StepFour = ({ doctorData, patientData, prescriptionData }: any) => {
                 doctorData={doctorData}
                 patientData={patientData}
                 time={prescriptionData?.time}
+                handleDownloadPDF={handleDownloadPDF}
+                id="pdf"
+                tabId="Referal"
               >
                 <RefererPrint
                   refererInfo={prescriptionData?.refer}
