@@ -1,6 +1,7 @@
-import { ReactNode, useRef } from "react";
+import { forwardRef, ReactNode, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import Image from "next/image";
+import Loader from "../common/Loader";
 
 interface DoctorData {
   doctorName?: string | "";
@@ -28,27 +29,31 @@ interface PatientInfo {
   zip?: string | "";
 }
 
-const PrintWrapper = ({
-  children,
-  doctorData,
-  patientData,
-  time,
-  handleDownloadPDF,
-  id,
-  tabId
-}: {
-  children: ReactNode;
-  doctorData: DoctorData;
-  patientData: PatientInfo;
-  time: any;
-  handleDownloadPDF: any;
-  id: string;
-  tabId: string;
-}) => {
-  const printRef = useRef(null);
-  const handlePrint = useReactToPrint({
-    content: () => printRef.current,
-    pageStyle: `
+const PrintWrapper = forwardRef(
+  (
+    {
+      children,
+      doctorData,
+      patientData,
+      time,
+      handleDownloadPDF,
+      tabId,
+      downloadLoader,
+    }: {
+      children: ReactNode;
+      doctorData: DoctorData;
+      patientData: PatientInfo;
+      time: any;
+      handleDownloadPDF: any;
+      tabId: string;
+      downloadLoader: any;
+    },
+    ref: any
+  ) => {
+    const printRef = useRef(null);
+    const handlePrint = useReactToPrint({
+      content: () => printRef.current,
+      pageStyle: `
     @page { 
       size: A4; 
       margin: 5mm; 
@@ -93,55 +98,61 @@ const PrintWrapper = ({
         display:none;
         }
       `,
-    bodyClass: "bg-white",
-    documentTitle: `${patientData?.first_name} ${patientData?.last_name}`,
-  });
-  // const downloadPrint = () => {};
-  // console.log(doctorData)
-  return (
-    <div className="join-item flex flex-col">
-      <div className="w-full flex flex-row justify-end gap-2 sm:pr-10 mb-4">
-        <button
-          onClick={handlePrint}
-          className="border-gray-200 btn animate-none hover:border-gray-300 btn-success join-item text-sm font-semibold leading-6 text-white"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="size-6"
+      bodyClass: "bg-white",
+      documentTitle: `${patientData?.first_name} ${patientData?.last_name}`,
+    });
+    // const downloadPrint = () => {};
+    // console.log(doctorData)
+    return (
+      <div className="join-item flex flex-col">
+        <div className="w-full flex flex-row justify-center gap-2 mb-4">
+          <button
+            onClick={handlePrint}
+            className="border-gray-200 btn animate-none hover:border-gray-300 btn-success join-item text-sm font-semibold leading-6 text-white"
           >
-            <path
-              fillRule="evenodd"
-              d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v2.99c-.426.053-.851.11-1.274.174-1.454.218-2.476 1.483-2.476 2.917v6.294a3 3 0 0 0 3 3h.27l-.155 1.705A1.875 1.875 0 0 0 7.232 22.5h9.536a1.875 1.875 0 0 0 1.867-2.045l-.155-1.705h.27a3 3 0 0 0 3-3V9.456c0-1.434-1.022-2.7-2.476-2.917A48.716 48.716 0 0 0 18 6.366V3.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM16.5 6.205v-2.83A.375.375 0 0 0 16.125 3h-8.25a.375.375 0 0 0-.375.375v2.83a49.353 49.353 0 0 1 9 0Zm-.217 8.265c.178.018.317.16.333.337l.526 5.784a.375.375 0 0 1-.374.409H7.232a.375.375 0 0 1-.374-.409l.526-5.784a.373.373 0 0 1 .333-.337 41.741 41.741 0 0 1 8.566 0Zm.967-3.97a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H18a.75.75 0 0 1-.75-.75V10.5ZM15 9.75a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V10.5a.75.75 0 0 0-.75-.75H15Z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-        <button
-          onClick={() => {
-            handleDownloadPDF(
-              `${patientData?.first_name}_${tabId}_Report`
-            );
-          }}
-          className="border-gray-200 btn animate-none hover:border-gray-300 btn-success join-item text-sm font-semibold leading-6 text-white"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            className="size-6"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="size-6"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v2.99c-.426.053-.851.11-1.274.174-1.454.218-2.476 1.483-2.476 2.917v6.294a3 3 0 0 0 3 3h.27l-.155 1.705A1.875 1.875 0 0 0 7.232 22.5h9.536a1.875 1.875 0 0 0 1.867-2.045l-.155-1.705h.27a3 3 0 0 0 3-3V9.456c0-1.434-1.022-2.7-2.476-2.917A48.716 48.716 0 0 0 18 6.366V3.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM16.5 6.205v-2.83A.375.375 0 0 0 16.125 3h-8.25a.375.375 0 0 0-.375.375v2.83a49.353 49.353 0 0 1 9 0Zm-.217 8.265c.178.018.317.16.333.337l.526 5.784a.375.375 0 0 1-.374.409H7.232a.375.375 0 0 1-.374-.409l.526-5.784a.373.373 0 0 1 .333-.337 41.741 41.741 0 0 1 8.566 0Zm.967-3.97a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H18a.75.75 0 0 1-.75-.75V10.5ZM15 9.75a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V10.5a.75.75 0 0 0-.75-.75H15Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={() => {
+              handleDownloadPDF(`${patientData?.first_name}_${tabId}_Report`);
+            }}
+            className="border-gray-200 btn animate-none hover:border-gray-300 btn-success join-item text-sm font-semibold leading-6 text-white"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="m9 13.5 3 3m0 0 3-3m-3 3v-6m1.06-4.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
-            />
-          </svg>
-        </button>
-        {/* <button
+            {downloadLoader ? (
+              <Loader
+                size="medium"
+                color="text-primary"
+                secondaryColor="text-gray-300"
+              />
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m9 13.5 3 3m0 0 3-3m-3 3v-6m1.06-4.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
+                />
+              </svg>
+            )}
+          </button>
+          {/* <button
           onClick={downloadPrint}
           className="border-gray-200 btn btn-md animate-none hover:border-gray-300 btn-neutral text-sm font-semibold text-white"
         >
@@ -158,124 +169,127 @@ const PrintWrapper = ({
             />
           </svg>
         </button> */}
-      </div>
-      <div
-        className="custom-zoom w-full flex items-center justify-center"
-        id={id}
-      >
+        </div>
         <div
-          ref={printRef}
-          id="componentToPrint"
-          className="relative print-container w-full px-8 py-4 font-sans max-w-[800px] border-2 border-gray-400 shadow-lg rounded-lg"
+          className="custom-zoom w-full flex items-center justify-center"
+          ref={ref}
         >
-          <div className="flex justify-between items-center mb-4">
-            <div>
+          <div
+            ref={printRef}
+            id="componentToPrint"
+            className="relative print-container w-full px-8 py-4 font-sans max-w-[800px] border-2 border-gray-400 shadow-lg rounded-lg"
+          >
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <Image
+                  src={doctorData?.clinicLogo || ""}
+                  alt="Clinic Logo"
+                  width={96}
+                  height={96}
+                  className="w-24"
+                />
+              </div>
+              <div className="text-right">
+                <h2 className="text-2xl font-bold">{doctorData?.clinicName}</h2>
+                <p className="text-sm">{doctorData?.clinicAddress}</p>
+                <p className="text-sm">Email: {doctorData?.emailId}</p>
+                <p className="text-sm">Phone: {doctorData?.clinicNumber}</p>
+              </div>
+            </div>
+            <div className="mb-4">
+              <h3 className="text-xl font-semibold mb-2">
+                Patient Information
+              </h3>
+              <table className="w-full border-collapse border border-gray-400">
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-400 p-1 pl-2 font-medium">
+                      ID
+                    </td>
+                    <td className="border border-gray-400 p-1 pl-2">
+                      {patientData?.patient_unique_Id}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-400 p-1 pl-2 font-medium">
+                      Visited Time
+                    </td>
+                    <td className="border border-gray-400 p-1 pl-2">
+                      {new Date(time ? time : "").toLocaleString("en-GB")}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-400 p-1 pl-2 font-medium">
+                      Name
+                    </td>
+                    <td className="border border-gray-400 p-1 pl-2">
+                      {patientData?.first_name} {patientData?.last_name}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-400 p-1 pl-2 font-medium">
+                      Age
+                    </td>
+                    <td className="border border-gray-400 p-1 pl-2">
+                      {patientData?.age}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-400 p-1 pl-2 font-medium">
+                      Gender
+                    </td>
+                    <td className="border border-gray-400 p-1 pl-2">
+                      {patientData?.gender}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-400 p-1 pl-2 font-medium">
+                      Address
+                    </td>
+                    <td className="border border-gray-400 p-1 pl-2">
+                      {[
+                        patientData?.street_address,
+                        patientData?.city,
+                        patientData?.state,
+                        patientData?.zip,
+                      ]
+                        .filter(Boolean)
+                        .join(", ")}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-400 p-1 pl-2 font-medium">
+                      Mobile
+                    </td>
+                    <td className="border border-gray-400 p-1 pl-2">
+                      {patientData?.mobile_number}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            {children}
+            <div className="text-right mt-0">
               <Image
-                src={doctorData?.clinicLogo || ""}
-                alt="Clinic Logo"
-                width={96}
-                height={96}
-                className="w-24"
+                src={doctorData?.signaturePhoto || ""}
+                alt="Doctor Signature"
+                width={48}
+                height={48}
+                className="w-12 inline-block mt-2"
               />
+              <p className="font-medium">{doctorData?.doctorName}</p>
+              <p className="font-medium">{doctorData?.degree}</p>
+              <p className="font-medium">{doctorData?.registrationNumber}</p>
             </div>
-            <div className="text-right">
-              <h2 className="text-2xl font-bold">{doctorData?.clinicName}</h2>
-              <p className="text-sm">{doctorData?.clinicAddress}</p>
-              <p className="text-sm">Email: {doctorData?.emailId}</p>
-              <p className="text-sm">Phone: {doctorData?.clinicNumber}</p>
+            <div className="absolute bottom-line bottom-0 w-full text-center print-footer">
+              This report generated by DardiBook software
             </div>
+            <div className="fixed bg-cover opacity-25 z-[10]"></div>
           </div>
-          <div className="mb-4">
-            <h3 className="text-xl font-semibold mb-2">Patient Information</h3>
-            <table className="w-full border-collapse border border-gray-400">
-              <tbody>
-                <tr>
-                  <td className="border border-gray-400 p-1 pl-2 font-medium">
-                    ID
-                  </td>
-                  <td className="border border-gray-400 p-1 pl-2">
-                    {patientData?.patient_unique_Id}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-400 p-1 pl-2 font-medium">
-                    Visited Time
-                  </td>
-                  <td className="border border-gray-400 p-1 pl-2">
-                    {new Date(time ? time : "").toLocaleString("en-GB")}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-400 p-1 pl-2 font-medium">
-                    Name
-                  </td>
-                  <td className="border border-gray-400 p-1 pl-2">
-                    {patientData?.first_name} {patientData?.last_name}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-400 p-1 pl-2 font-medium">
-                    Age
-                  </td>
-                  <td className="border border-gray-400 p-1 pl-2">
-                    {patientData?.age}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-400 p-1 pl-2 font-medium">
-                    Gender
-                  </td>
-                  <td className="border border-gray-400 p-1 pl-2">
-                    {patientData?.gender}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-400 p-1 pl-2 font-medium">
-                    Address
-                  </td>
-                  <td className="border border-gray-400 p-1 pl-2">
-                    {[
-                      patientData?.street_address,
-                      patientData?.city,
-                      patientData?.state,
-                      patientData?.zip,
-                    ]
-                      .filter(Boolean)
-                      .join(", ")}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-400 p-1 pl-2 font-medium">
-                    Mobile
-                  </td>
-                  <td className="border border-gray-400 p-1 pl-2">
-                    {patientData?.mobile_number}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          {children}
-          <div className="text-right mt-0">
-            <Image
-              src={doctorData?.signaturePhoto || ""}
-              alt="Doctor Signature"
-              width={48}
-              height={48}
-              className="w-12 inline-block mt-2"
-            />
-            <p className="font-medium">{doctorData?.doctorName}</p>
-            <p className="font-medium">{doctorData?.degree}</p>
-            <p className="font-medium">{doctorData?.registrationNumber}</p>
-          </div>
-          <div className="absolute bottom-line bottom-0 w-full text-center print-footer">
-            This report generated by DardiBook software
-          </div>
-          <div className="fixed bg-cover opacity-25 z-[10]"></div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 export default PrintWrapper;
