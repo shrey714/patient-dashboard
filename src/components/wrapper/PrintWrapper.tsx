@@ -292,4 +292,6 @@ const PrintWrapper = forwardRef(
   }
 );
 
+
+PrintWrapper.displayName = "PrintWrapper";
 export default PrintWrapper;
