@@ -1,13 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import puppeteer from 'puppeteer';
+import puppeteerCore from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 
 export const POST = async (req: NextRequest) => {
   try {
-    // Parse the request body
+    // // Parse the request body
     const { html }: { html: string } = await req.json();
 
-    // Launch a headless browser
-    const browser = await puppeteer.launch();
+    // // Launch a headless browser
+    let browser:any = null;
+    // const browser = await puppeteer.launch();
+    if (process.env.NODE_ENV === 'development') {
+      browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        headless: true,
+      });
+    }
+    if (process.env.NODE_ENV === 'production') {
+      browser = await puppeteerCore.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+      });
+    }
     const page = await browser.newPage();
 
     // Set the received HTML content

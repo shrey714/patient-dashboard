@@ -6,8 +6,6 @@ import PrintWrapper from "@/components/wrapper/PrintWrapper";
 import PrescriptionPrint from "../../Print/PrescriptionPrint";
 import RefererPrint from "../../Print/RefererPrint";
 import Loader from "@/components/common/Loader";
-import html2canvas from 'html2canvas-pro';
-import jsPDF from 'jspdf';
 import { getPdf } from "@/Services/getPdf";
 
 const StepFour = ({ doctorData, patientData, prescriptionData }: any) => {
