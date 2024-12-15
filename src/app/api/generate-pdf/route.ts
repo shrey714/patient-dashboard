@@ -19,8 +19,10 @@ export const POST = async (req: NextRequest) => {
     }
     if (process.env.NODE_ENV === 'production') {
       browser = await puppeteerCore.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        headless: true,
+        args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: true,
       });
     }
     const page = await browser.newPage();
